@@ -20,6 +20,9 @@ import org.datayoo.tripod.metadata.ExpressionMetadata;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 算子接口
+ */
 public interface Operand {
 
   ExpressionMetadata getMetadata();
@@ -29,10 +32,11 @@ public interface Operand {
   double operate(DocumentEntity documentEntity, boolean termDistance);
 
   /**
-   * @param documentEntity
+   * 对文档进行匹配计算
+   * @param documentEntity 文档实体对象
    * @param termDistance   是否采用词距离，如不采用词距离则采用字符距离
    * @param hitMap         算子命中的文本的列表，若为null表示不返回命中列表
-   * @return
+   * @return 相关度值，若该值为负表示不匹配
    */
   double operate(DocumentEntity documentEntity, boolean termDistance,
       Map<String, List<HitToken>> hitMap);

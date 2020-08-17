@@ -20,9 +20,9 @@ import org.apache.commons.lang3.Validate;
 import java.io.Serializable;
 
 public class FieldMetadata implements Serializable {
-
+  // 字段名
   protected String field;
-
+  // 字段权重
   protected int boost;
 
   public FieldMetadata(String field, int boost) {

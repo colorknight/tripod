@@ -22,13 +22,25 @@ import java.util.Set;
  * 用于记录词与文档的数目，方便计算IDF
  */
 public interface IdfCounter {
-
+  /**
+   * 对集合中的词进行记数
+   * @param terms 词集合，一般认为一个set集合为一篇文档中出现的所有去重后的词
+   */
   void count(Set<String> terms);
-
+  /**
+   * 获得指定词的idf值
+   * @param term 词
+   * @return idf分值
+   */
   double idf(String term);
-
+  /**
+   * 获得全部的文档数
+   * @return 全部文档数
+   */
   int getTotalDocs();
-
+  /**
+   * 获得词语存在于多少个文档中的Map集合
+   * @return 词语与文档数的Map集合
+   */
   Map<String, Integer> getTermDocs();
-
 }

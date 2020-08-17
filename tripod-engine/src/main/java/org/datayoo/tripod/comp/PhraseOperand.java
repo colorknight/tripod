@@ -77,7 +77,10 @@ public class PhraseOperand extends AtomOperand {
 
   /**
    * 获得短语中每个词出现的所有位置
-   *
+   * @param documentEntity 文档实体对象
+   * @param termDistance 是否以词距离来计算短语距离，为true时，表示以词距离计算；为
+   *                     false时，表示以字符距离计算。
+   * @param score 相关度分值，该值为一个[IN/OUT]参数。
    * @return 按短语中的词序组织的词出现位置的位置数组
    */
   protected int[][] findPos(DocumentEntity documentEntity, boolean termDistance,

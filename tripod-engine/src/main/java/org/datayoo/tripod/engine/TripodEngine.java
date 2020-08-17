@@ -41,17 +41,34 @@ public class TripodEngine {
 
   protected ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
 
+  /**
+   * TripodEngine构造器
+   * @param allFields 待处理的文档的所有字段的相关描述
+   * @param defaultFieldMetadata 缺省字段，即当表达式不指定title时，表明是此字段
+   * @param idfCounter 用于计算Idf的工具接口
+   */
   public TripodEngine(List<FieldMetadata> allFields,
       FieldMetadata defaultFieldMetadata, IdfCounter idfCounter) {
     tripodContext = new TripodContextImpl(allFields, defaultFieldMetadata,
         idfCounter);
   }
 
+  /**
+   * 设置匹配时，是否计算相关度
+   * @param scoring true表示计算相关度,false表示不计算相关度
+   * @return TripodEngine
+   */
   public TripodEngine setScoring(boolean scoring) {
     tripodContext.setScoring(scoring);
     return this;
   }
 
+  /**
+   * 添加一个以lucene语法规则描述的匹配规则
+   * @param name 规则名
+   * @param rule 由lucene语法描述的匹配规则
+   * @param tripodListener 命中结果监听器，当匹配命中时，调用词监听器返回结果数据
+   */
   public void addTripodRule(String name, String rule,
       TripodListener tripodListener) {
     Validate.notEmpty(name, "name is empty!");
@@ -74,6 +91,11 @@ public class TripodEngine {
     }
   }
 
+  /**
+   * 删除以lucene语法规则描述的匹配规则
+   * @param name 规则的名字
+   * @return 由lucene语法描述的匹配规则
+   */
   public String removeTripodRule(String name) {
     Validate.notEmpty(name, "name is empty!");
     rwLock.writeLock().lock();
@@ -87,14 +109,38 @@ public class TripodEngine {
     }
   }
 
+  /**
+   * 对map格式描述的文档数据进行匹配。
+   * @param dataMap 待匹配数据，Map中的key为lucene规则中要处理的field;value为文本
+   *                进行分词处理后的有序词组。每组数据会被视为一个文档，内部处理时会
+   *                转换为DocumentEntity对象。
+   */
   public void match(Map<String, TermEntity[]> dataMap) {
     match(dataMap, true, false);
   }
 
+  /**
+   * 对map格式描述的文档数据进行匹配。
+   * @param dataMap 待匹配数据，Map中的key为lucene规则中要处理的field;value为文本
+   *                进行分词处理后的有序词组。每组数据会被视为一个文档，内部处理时会
+   *                转换为DocumentEntity对象。
+   * @param termDistance 是否以词距离进行匹配，缺省为true；若该值为false，表示以字
+   *                     符距离进行距离计算。
+   */
   public void match(Map<String, TermEntity[]> dataMap, boolean termDistance) {
     match(dataMap, termDistance, false);
   }
 
+  /**
+   * 对map格式描述的文档数据进行匹配。
+   * @param dataMap 待匹配数据，Map中的key为lucene规则中要处理的field;value为文本
+   *                进行分词处理后的有序词组。每组数据会被视为一个文档，内部处理时会
+   *                转换为DocumentEntity对象。
+   * @param termDistance 是否以词距离进行匹配，缺省为true；若该值为false，表示以字
+   *                     符距离进行距离计算。
+   * @param retHit 是否返回规则命中的标记信息，该值缺省为false；若该值为true时，表示
+   *               返回命中的标记，标记可以是词，短语或一段文本的起止位置。
+   */
   public void match(Map<String, TermEntity[]> dataMap, boolean termDistance,
       boolean retHit) {
     Validate.notEmpty(dataMap, "dataMap is empty!");

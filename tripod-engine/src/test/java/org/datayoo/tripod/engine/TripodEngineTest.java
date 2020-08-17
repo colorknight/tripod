@@ -28,8 +28,11 @@ import java.util.Map;
 public class TripodEngineTest extends TestCase {
 
   public void test1() {
+    // 创建TripodEngine
     TripodEngine tripodEngine = createTripodEngine();
+    // 构造测试数据文档
     Map<String, TermEntity[]> dataMap = TripodTestHelper.createDataMap();
+    // 匹配文档
     tripodEngine.match(dataMap, true);
     try {
       Thread.sleep(1000);
@@ -55,12 +58,18 @@ public class TripodEngineTest extends TestCase {
     fieldMetadatas.add(fieldMetadata);
     fieldMetadata = new FieldMetadata("content", 1);
     fieldMetadatas.add(fieldMetadata);
+    /*
+    * 初始化TripodEngine，传入待处理的文档对象的字段信息，缺省字段及Idf计算辅助接口
+    * */
     TripodEngine tripodEngine = new TripodEngine(fieldMetadatas, fieldMetadata,
         new IdfCounterImpl());
+    // 设置引擎在匹配时计算相关度
     tripodEngine.setScoring(true);
+    // 文档匹配监听器，当规则匹配文档后，通过该接口回调传回匹配结果
     TripodListener tripodListener = new TripodPrintListener();
     //    yoolerEngine
     //        .addYoolerRule("test", "(中办&title:中办)^2 任命 形式主义", yoolerListener);
+    // 向引擎添加匹配规则
     tripodEngine.addTripodRule("test1", "\"第5代 领导\" 任命 形式主义", tripodListener);
     return tripodEngine;
   }

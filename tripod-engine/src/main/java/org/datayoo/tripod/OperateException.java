@@ -24,26 +24,16 @@ public class OperateException extends RuntimeException {
 
   private long exceptionCode;
 
-  /**
-   * @param message
-   * @param cause
-   */
   public OperateException(String message, Throwable cause) {
     super(message, cause);
     // TODO Auto-generated constructor stub
   }
 
-  /**
-   * @param message
-   */
   public OperateException(String message) {
     super(message);
     // TODO Auto-generated constructor stub
   }
 
-  /**
-   * @param cause
-   */
   public OperateException(Throwable cause) {
     super(cause);
     // TODO Auto-generated constructor stub

@@ -43,11 +43,21 @@ public class TripodEvaluator {
 
   protected double notCoefficent = 1;
 
+  /**
+   * 对lucene匹配规则的复杂度进行评估，给出复杂度评估分值
+   * @param rule 以lucene语法描述的规则文本串，
+   * @return 复杂度评估值
+   */
   public double complexity(String rule) {
     BoolMetadata boolMetadata = TripodExpressionParser.parseFromString(rule);
     return complexity(boolMetadata);
   }
 
+  /**
+   * 对lucene匹配规则的复杂度进行评估，给出复杂度评估分值
+   * @param boolMetadata lucene语法树根节点
+   * @return 复杂度评估值
+   */
   public double complexity(BoolMetadata boolMetadata) {
     double score = 0;
     for (ExpressionMetadata expressionMetadata : boolMetadata.getBoolExprs()) {

@@ -6,7 +6,7 @@
     <parent>
         <artifactId>tripod-parent</artifactId>
         <groupId>org.datayoo.tripod</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.datayoo.tripod</groupId>
             <artifactId>tripod-meta</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
