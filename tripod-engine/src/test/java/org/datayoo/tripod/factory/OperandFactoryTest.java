@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.datayoo.tripod.operand.factory;
+package org.datayoo.tripod.factory;
 
 import junit.framework.TestCase;
 import org.datayoo.tripod.*;
