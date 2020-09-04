@@ -18,6 +18,7 @@ package org.datayoo.tripod;
 import org.apache.commons.lang3.Validate;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -26,7 +27,8 @@ public class IdfCounterImpl implements IdfCounter {
 
   protected int totalDocs;
 
-  protected Map<String, Integer> termDocs = new TreeMap<String, Integer>();
+  protected Map<String, Integer> termDocs = Collections
+      .synchronizedMap(new TreeMap<String, Integer>());
 
   public IdfCounterImpl() {
   }
