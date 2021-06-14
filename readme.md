@@ -73,7 +73,7 @@ public interface IdfCounter {
 
 并给出了一个缺省实现，IdfCounterImpl，该实现拥有save()和load()的方法，但何时save，何时load交由使用者根据需要调用。
 
-​       需要注意的是，Tripod采用的相关度打分原理与lucene一致，但很难保证打分值一致。但分值所表现的相关度强弱关系时一致的。另外，Tripod提供了一个是否进行分值评估的开关选项，setScoring()方法。在对实时文本匹配处理时，若只需要知道是否命中，而不需知道相关度时，可将打分机制关闭，即设置该值为false，则可以优化匹配效率。
+​       需要注意的是，Tripod采用的相关度打分原理与lucene一致，但很难保证打分值一致。但分值所表现的相关度强弱关系是一致的。另外，Tripod提供了一个是否进行分值评估的开关选项，setScoring()方法。在对实时文本匹配处理时，若只需要知道是否命中，而不需知道相关度时，可将打分机制关闭，即设置该值为false，则可以优化匹配效率。
 
 ​       Tripod对外提供服务的类主要有以下三个：
 
@@ -107,7 +107,7 @@ public interface IdfCounter {
 public void test1() {
   // 创建TripodEngine
   TripodEngine tripodEngine = createTripodEngine();
-  // 构造测试数据文档
+  // 构造测试数据文档，一个文档由多个部分，如：题目，内容；而每个部分由一堆词组成
   Map<String, TermEntity[]> dataMap = TripodTestHelper.createDataMap();
   // 匹配文档
   tripodEngine.match(dataMap, true);
@@ -119,6 +119,7 @@ public void test1() {
 }
 
 protected static TripodEngine createTripodEngine() {
+  // 描述文档的组成结构，及结构中每一部分的权重
   List<FieldMetadata> fieldMetadatas = new LinkedList<FieldMetadata>();
   FieldMetadata fieldMetadata = new FieldMetadata("title", 2);
   fieldMetadatas.add(fieldMetadata);
@@ -126,6 +127,8 @@ protected static TripodEngine createTripodEngine() {
   fieldMetadatas.add(fieldMetadata);
   /*
   * 初始化TripodEngine，传入待处理的文档对象的字段信息，缺省字段及Idf计算辅助接口
+  * IdfCounterImpl记录了文档与词的相关关系，可持久化该类的信息，每次使用Tripod时
+  * 注入这些持久化数据，使Tripod的相关度计算结果尽量保持与lucene一致
   * */
   TripodEngine tripodEngine = new TripodEngine(fieldMetadatas, fieldMetadata,
       new IdfCounterImpl());
@@ -133,9 +136,9 @@ protected static TripodEngine createTripodEngine() {
   tripodEngine.setScoring(true);
   // 文档匹配监听器，当规则匹配文档后，通过该接口回调传回匹配结果
   TripodListener tripodListener = new TripodPrintListener();
-  //    yoolerEngine
-  //        .addYoolerRule("test", "(中办&title:中办)^2 任命 形式主义", yoolerListener);
-  // 向引擎添加匹配规则
+  //    tripodEngine
+  //        .addTripodRule("test", "(中办&title:中办)^2 任命 形式主义", tripodListener);
+  // 向引擎添加基于lucene语法的过滤规则
   tripodEngine.addTripodRule("test1", "\"第5代 领导\" 任命 形式主义", tripodListener);
   return tripodEngine;
 }
