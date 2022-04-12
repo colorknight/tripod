@@ -22,10 +22,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class IdfCounterImpl implements IdfCounter {
 
-  protected int totalDocs;
+  protected AtomicLong totalDocs;
 
   protected Map<String, Integer> termDocs = Collections
       .synchronizedMap(new TreeMap<String, Integer>());
@@ -33,13 +34,13 @@ public class IdfCounterImpl implements IdfCounter {
   public IdfCounterImpl() {
   }
 
-  public IdfCounterImpl(int totalDocs, Map<String, Integer> termDocs) {
-    this.totalDocs = totalDocs;
+  public IdfCounterImpl(long totalDocs, Map<String, Integer> termDocs) {
+    this.totalDocs = new AtomicLong(totalDocs);
     this.termDocs = termDocs;
   }
 
   public void count(Set<String> terms) {
-    totalDocs++;
+    totalDocs.getAndIncrement();
     for (String term : terms) {
       Integer i = termDocs.get(term);
       if (i == null) {
@@ -54,11 +55,11 @@ public class IdfCounterImpl implements IdfCounter {
     Integer num = termDocs.get(term);
     if (num == null)
       return 0;
-    return Math.log(totalDocs / (double) (num + 1)) + 1.0;
+    return Math.log(totalDocs.get() / (double) (num + 1)) + 1.0;
   }
 
-  public int getTotalDocs() {
-    return totalDocs;
+  public long getTotalDocs() {
+    return totalDocs.get();
   }
 
   public Map<String, Integer> getTermDocs() {
@@ -70,7 +71,8 @@ public class IdfCounterImpl implements IdfCounter {
     ObjectInputStream ois = new ObjectInputStream(
         new FileInputStream(fileName));
     try {
-      totalDocs = ois.readInt();
+      long l = ois.readLong();
+      totalDocs = new AtomicLong(l);
       termDocs = (Map<String, Integer>) ois.readObject();
     } finally {
       ois.close();
@@ -84,7 +86,7 @@ public class IdfCounterImpl implements IdfCounter {
     ObjectOutputStream oos = new ObjectOutputStream(
         new FileOutputStream(fileName));
     try {
-      oos.writeInt(totalDocs);
+      oos.writeLong(totalDocs.get());
       oos.writeObject(termDocs);
     } finally {
       oos.close();

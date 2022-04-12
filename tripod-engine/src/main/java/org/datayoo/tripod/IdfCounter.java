@@ -37,7 +37,7 @@ public interface IdfCounter {
    * 获得全部的文档数
    * @return 全部文档数
    */
-  int getTotalDocs();
+  long getTotalDocs();
   /**
    * 获得词语存在于多少个文档中的Map集合
    * @return 词语与文档数的Map集合
