@@ -28,10 +28,11 @@ public class IdfCounterImpl implements IdfCounter {
 
   protected AtomicLong totalDocs;
 
-  protected Map<String, Integer> termDocs = Collections
-      .synchronizedMap(new TreeMap<String, Integer>());
+  protected Map<String, Integer> termDocs = Collections.synchronizedMap(
+      new TreeMap<String, Integer>());
 
   public IdfCounterImpl() {
+    this.totalDocs = new AtomicLong(0);
   }
 
   public IdfCounterImpl(long totalDocs, Map<String, Integer> termDocs) {

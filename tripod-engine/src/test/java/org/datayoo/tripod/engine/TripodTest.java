@@ -20,7 +20,10 @@ import org.datayoo.tripod.FieldMetadata;
 import org.datayoo.tripod.IdfCounterImpl;
 import org.datayoo.tripod.TermEntity;
 import org.datayoo.tripod.operand.TripodTestHelper;
+import org.datayoo.tripod.seg.TripodSegment;
+import org.datayoo.tripod.seg.ansj.AnsjSegmenter;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;

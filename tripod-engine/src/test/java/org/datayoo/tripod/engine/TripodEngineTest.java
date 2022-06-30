@@ -20,7 +20,10 @@ import org.datayoo.tripod.FieldMetadata;
 import org.datayoo.tripod.IdfCounterImpl;
 import org.datayoo.tripod.TermEntity;
 import org.datayoo.tripod.operand.TripodTestHelper;
+import org.datayoo.tripod.seg.TripodSegment;
+import org.datayoo.tripod.seg.ansj.AnsjSegmenter;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +55,18 @@ public class TripodEngineTest extends TestCase {
     }
   }
 
+  public void test3() {
+    SegmentableTripodEngine tripodEngine = createSegmentableTripodEngine();
+    Map<String, Object> dataMap = new HashMap<>();
+    dataMap.put("content", "这是中办发发布的关于人事任命的通知。杜绝形式主义，形而上学的言论。");
+    tripodEngine.match(dataMap, true, true);
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
   protected static TripodEngine createTripodEngine() {
     List<FieldMetadata> fieldMetadatas = new LinkedList<FieldMetadata>();
     FieldMetadata fieldMetadata = new FieldMetadata("title", 2);
@@ -59,8 +74,8 @@ public class TripodEngineTest extends TestCase {
     fieldMetadata = new FieldMetadata("content", 1);
     fieldMetadatas.add(fieldMetadata);
     /*
-    * 初始化TripodEngine，传入待处理的文档对象的字段信息，缺省字段及Idf计算辅助接口
-    * */
+     * 初始化TripodEngine，传入待处理的文档对象的字段信息，缺省字段及Idf计算辅助接口
+     * */
     TripodEngine tripodEngine = new TripodEngine(fieldMetadatas, fieldMetadata,
         new IdfCounterImpl());
     // 设置引擎在匹配时计算相关度
@@ -71,6 +86,29 @@ public class TripodEngineTest extends TestCase {
     //        .addYoolerRule("test", "(中办&title:中办)^2 任命 形式主义", yoolerListener);
     // 向引擎添加匹配规则
     tripodEngine.addTripodRule("test1", "\"第5代 领导\" 任命 形式主义", tripodListener);
+    return tripodEngine;
+  }
+
+  protected static SegmentableTripodEngine createSegmentableTripodEngine() {
+    List<FieldMetadata> fieldMetadatas = new LinkedList<FieldMetadata>();
+    FieldMetadata fieldMetadata = new FieldMetadata("title", 2);
+    fieldMetadatas.add(fieldMetadata);
+    fieldMetadata = new FieldMetadata("content", 1);
+    fieldMetadatas.add(fieldMetadata);
+    /*
+     * 初始化TripodEngine，传入待处理的文档对象的字段信息，缺省字段及Idf计算辅助接口
+     * */
+    TripodSegment tripodSegment = new AnsjSegmenter();
+    SegmentableTripodEngine tripodEngine = new SegmentableTripodEngine(
+        fieldMetadatas, fieldMetadata, new IdfCounterImpl(), tripodSegment);
+    // 设置引擎在匹配时计算相关度
+    tripodEngine.setScoring(true);
+    // 文档匹配监听器，当规则匹配文档后，通过该接口回调传回匹配结果
+    TripodListener tripodListener = new TripodPrintListener();
+    //    yoolerEngine
+    //        .addYoolerRule("test", "(中办&title:中办)^2 任命 形式主义", yoolerListener);
+    // 向引擎添加匹配规则
+    tripodEngine.addTripodRule("test3", "\"第5代 领导\" 任命 形式主义", tripodListener);
     return tripodEngine;
   }
 

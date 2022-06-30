@@ -13,7 +13,7 @@
     <groupId>org.datayoo.tripod</groupId>
     <artifactId>tripod-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <modules>
         <module>tripod-meta</module>
         <module>tripod-engine</module>

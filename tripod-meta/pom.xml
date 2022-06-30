@@ -6,13 +6,13 @@
     <parent>
         <artifactId>tripod-parent</artifactId>
         <groupId>org.datayoo.tripod</groupId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>tripod-meta</artifactId>
 
     <name>tripod-meta</name>
+    <version>1.0.1</version>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 

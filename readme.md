@@ -75,7 +75,7 @@ public interface IdfCounter {
 
 ​       需要注意的是，Tripod采用的相关度打分原理与lucene一致，但很难保证打分值一致。但分值所表现的相关度强弱关系是一致的。另外，Tripod提供了一个是否进行分值评估的开关选项，setScoring()方法。在对实时文本匹配处理时，若只需要知道是否命中，而不需知道相关度时，可将打分机制关闭，即设置该值为false，则可以优化匹配效率。
 
-​       Tripod对外提供服务的类主要有以下三个：
+​       Tripod对外提供服务的类主要有以下四个：
 
 Ø  Tripod类
 
@@ -84,6 +84,10 @@ public interface IdfCounter {
 Ø  TripodEngine类
 
 ​		该对象可以被视为一个Tripod的集合。在实际应用场景中，一般不会只有一个匹配规则。往往会有多个匹配规则需要对文档进行同时匹配。如向不同客户推送数据的应用场景，或者依据特征规则进行文档分类的应用场景等。
+
+Ø  SegmentableTripodEngine类
+
+​		该对象是TripodEngine的升级版。其用法与TripodEngine相似，唯一不同是其内置分词器，可以对输入的数据进行分词然后进行规则匹配，可以方便没有做统一分词处理的应用场景。系统缺省内置了基于Ansj算法的分词器，使用者如希望换分词器，可以通过实现TripodSegment接口来扩展分词器。SegmentableTripodEngine会根据内置的规则计算需要对哪些字段进行分词，当输入待计算匹配的数据时，若该字段未进行分词，则使用该引擎预设的分词器对数据进行分词。当使用该类时，需要注意所设规则中使用的词都可以通过分词器分词获得，否则可能无法达到预期的匹配效果。
 
 Ø  TripodEvaluator类
 
@@ -97,7 +101,7 @@ public interface IdfCounter {
 <dependency>
 <groupId>org.datayoo.tripod</groupId>
     <artifactId>tripod-engine</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
@@ -147,6 +151,47 @@ protected static TripodEngine createTripodEngine() {
 示例代码的执行结果为：
 
 test1 : 0.066580
+
+```
+  public void test3() {
+    SegmentableTripodEngine tripodEngine = createSegmentableTripodEngine();
+    Map<String, Object> dataMap = new HashMap<>();
+    dataMap.put("content", "这是中办发发布的关于人事任命的通知。杜绝形式主义，形而上学的言论。");
+    tripodEngine.match(dataMap, true, true);
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+  
+    protected static SegmentableTripodEngine createSegmentableTripodEngine() {
+    List<FieldMetadata> fieldMetadatas = new LinkedList<FieldMetadata>();
+    FieldMetadata fieldMetadata = new FieldMetadata("title", 2);
+    fieldMetadatas.add(fieldMetadata);
+    fieldMetadata = new FieldMetadata("content", 1);
+    fieldMetadatas.add(fieldMetadata);
+    /*
+     * 初始化TripodEngine，传入待处理的文档对象的字段信息，缺省字段及Idf计算辅助接口
+     * */
+    TripodSegment tripodSegment = new AnsjSegmenter();
+    SegmentableTripodEngine tripodEngine = new SegmentableTripodEngine(
+        fieldMetadatas, fieldMetadata, new IdfCounterImpl(), tripodSegment);
+    // 设置引擎在匹配时计算相关度
+    tripodEngine.setScoring(true);
+    // 文档匹配监听器，当规则匹配文档后，通过该接口回调传回匹配结果
+    TripodListener tripodListener = new TripodPrintListener();
+    //    yoolerEngine
+    //        .addYoolerRule("test", "(中办&title:中办)^2 任命 形式主义", yoolerListener);
+    // 向引擎添加匹配规则
+    tripodEngine.addTripodRule("test1", "\"第5代 领导\" 任命 形式主义", tripodListener);
+    return tripodEngine;
+  }
+```
+
+示例代码的执行结果为：
+
+test1 : 0.032416
 
 ## Tripod语法
 
