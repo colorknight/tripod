@@ -101,7 +101,7 @@ public interface IdfCounter {
 <dependency>
 <groupId>org.datayoo.tripod</groupId>
     <artifactId>tripod-engine</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
