@@ -61,7 +61,7 @@ public class TripodContextImpl implements TripodContext {
       if (fm.getField().equals(field))
         return fm.getBoost();
     }
-    return 0;
+    return 1;
   }
 
   @Override
