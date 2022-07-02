@@ -47,7 +47,7 @@ LINE_COMMENT:       '//' ~[\r\n]*    -> channel(HIDDEN);
 
 // Identifiers
 
-IDENTIFIER:         Letter LetterOrDigit*;
+IDENTIFIER:         Letter LetterOrDigit* ('.' Letter LetterOrDigit*)*;
 
 // Fragment rules
 

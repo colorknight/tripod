@@ -153,7 +153,7 @@ public class TripodParser extends Parser {
 			setState(35);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NUMBER) | (1L << TERM) | (1L << Q_PHRASE) | (1L << DQ_PHRASE) | (1L << LPAREN) | (1L << LBRACE) | (1L << LBRACK) | (1L << NOT) | (1L << MUST) | (1L << MINUS))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NUMBER) | (1L << TERM) | (1L << Q_PHRASE) | (1L << DQ_PHRASE) | (1L << LPAREN) | (1L << LBRACE) | (1L << LBRACK) | (1L << NOT) | (1L << MUST) | (1L << MINUS) | (1L << IDENTIFIER))) != 0)) {
 				{
 				{
 				setState(30);
@@ -380,6 +380,7 @@ public class TripodParser extends Parser {
 			case LBRACE:
 			case LBRACK:
 			case MUST:
+			case IDENTIFIER:
 				break;
 			default:
 				break;
@@ -416,7 +417,7 @@ public class TripodParser extends Parser {
 		public TerminalNode MUST() { return getToken(TripodParser.MUST, 0); }
 		public TerminalNode COLON() { return getToken(TripodParser.COLON, 0); }
 		public TerminalNode CARET() { return getToken(TripodParser.CARET, 0); }
-		public TerminalNode TERM() { return getToken(TripodParser.TERM, 0); }
+		public TerminalNode IDENTIFIER() { return getToken(TripodParser.IDENTIFIER, 0); }
 		public TerminalNode NUMBER() { return getToken(TripodParser.NUMBER, 0); }
 		public BasicExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -456,19 +457,19 @@ public class TripodParser extends Parser {
 
 			setState(76);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,5,_ctx) ) {
-			case 1:
+			_la = _input.LA(1);
+			if (_la==IDENTIFIER) {
 				{
 				setState(73);
-				((BasicExpressionContext)_localctx).t = match(TERM);
+				((BasicExpressionContext)_localctx).t = match(IDENTIFIER);
 				setState(74);
 				match(COLON);
 
 				        field = ((BasicExpressionContext)_localctx).t.getText();
 				    
 				}
-				break;
 			}
+
 			setState(78);
 			((BasicExpressionContext)_localctx).primaryCtx = primary();
 
@@ -1209,17 +1210,17 @@ public class TripodParser extends Parser {
 		"8:\3\2\2\29\65\3\2\2\2:=\3\2\2\2;9\3\2\2\2;<\3\2\2\2<\7\3\2\2\2=;\3\2"+
 		"\2\2>?\7\16\2\2?C\b\5\1\2@A\7\23\2\2AC\b\5\1\2B>\3\2\2\2B@\3\2\2\2BC\3"+
 		"\2\2\2CD\3\2\2\2DE\5\n\6\2EF\b\5\1\2F\t\3\2\2\2GH\7\22\2\2HJ\b\6\1\2I"+
-		"G\3\2\2\2IJ\3\2\2\2JN\3\2\2\2KL\7\4\2\2LM\7\17\2\2MO\b\6\1\2NK\3\2\2\2"+
-		"NO\3\2\2\2OP\3\2\2\2PQ\5\f\7\2QW\b\6\1\2RT\7\25\2\2SU\7\3\2\2TS\3\2\2"+
-		"\2TU\3\2\2\2UV\3\2\2\2VX\b\6\1\2WR\3\2\2\2WX\3\2\2\2X\13\3\2\2\2YZ\5\20"+
-		"\t\2Z[\b\7\1\2[q\3\2\2\2\\]\5\24\13\2]^\b\7\1\2^q\3\2\2\2_`\5\16\b\2`"+
-		"a\b\7\1\2aq\3\2\2\2bc\5\26\f\2cg\b\7\1\2de\5\32\16\2ef\b\7\1\2fh\3\2\2"+
-		"\2gd\3\2\2\2gh\3\2\2\2hq\3\2\2\2ij\5\30\r\2jn\b\7\1\2kl\5\34\17\2lm\b"+
-		"\7\1\2mo\3\2\2\2nk\3\2\2\2no\3\2\2\2oq\3\2\2\2pY\3\2\2\2p\\\3\2\2\2p_"+
-		"\3\2\2\2pb\3\2\2\2pi\3\2\2\2q\r\3\2\2\2rs\7\7\2\2st\5\2\2\2tu\b\b\1\2"+
-		"uv\7\b\2\2v\17\3\2\2\2wx\7\13\2\2x{\b\t\1\2y{\7\t\2\2zw\3\2\2\2zy\3\2"+
-		"\2\2{|\3\2\2\2|}\5\22\n\2}~\7\r\2\2~\u0082\5\22\n\2\177\u0080\7\f\2\2"+
-		"\u0080\u0083\b\t\1\2\u0081\u0083\7\n\2\2\u0082\177\3\2\2\2\u0082\u0081"+
+		"G\3\2\2\2IJ\3\2\2\2JN\3\2\2\2KL\7\33\2\2LM\7\17\2\2MO\b\6\1\2NK\3\2\2"+
+		"\2NO\3\2\2\2OP\3\2\2\2PQ\5\f\7\2QW\b\6\1\2RT\7\25\2\2SU\7\3\2\2TS\3\2"+
+		"\2\2TU\3\2\2\2UV\3\2\2\2VX\b\6\1\2WR\3\2\2\2WX\3\2\2\2X\13\3\2\2\2YZ\5"+
+		"\20\t\2Z[\b\7\1\2[q\3\2\2\2\\]\5\24\13\2]^\b\7\1\2^q\3\2\2\2_`\5\16\b"+
+		"\2`a\b\7\1\2aq\3\2\2\2bc\5\26\f\2cg\b\7\1\2de\5\32\16\2ef\b\7\1\2fh\3"+
+		"\2\2\2gd\3\2\2\2gh\3\2\2\2hq\3\2\2\2ij\5\30\r\2jn\b\7\1\2kl\5\34\17\2"+
+		"lm\b\7\1\2mo\3\2\2\2nk\3\2\2\2no\3\2\2\2oq\3\2\2\2pY\3\2\2\2p\\\3\2\2"+
+		"\2p_\3\2\2\2pb\3\2\2\2pi\3\2\2\2q\r\3\2\2\2rs\7\7\2\2st\5\2\2\2tu\b\b"+
+		"\1\2uv\7\b\2\2v\17\3\2\2\2wx\7\13\2\2x{\b\t\1\2y{\7\t\2\2zw\3\2\2\2zy"+
+		"\3\2\2\2{|\3\2\2\2|}\5\22\n\2}~\7\r\2\2~\u0082\5\22\n\2\177\u0080\7\f"+
+		"\2\2\u0080\u0083\b\t\1\2\u0081\u0083\7\n\2\2\u0082\177\3\2\2\2\u0082\u0081"+
 		"\3\2\2\2\u0083\u0084\3\2\2\2\u0084\u0085\b\t\1\2\u0085\21\3\2\2\2\u0086"+
 		"\u0087\5\30\r\2\u0087\u0088\b\n\1\2\u0088\u008d\3\2\2\2\u0089\u008a\5"+
 		"\26\f\2\u008a\u008b\b\n\1\2\u008b\u008d\3\2\2\2\u008c\u0086\3\2\2\2\u008c"+

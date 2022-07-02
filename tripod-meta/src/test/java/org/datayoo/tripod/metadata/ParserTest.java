@@ -112,4 +112,11 @@ public class ParserTest extends TestCase {
     System.out.println(expressionMetadata.toString());
   }
 
+  public void testParse10() {
+    String expr1 = "a.title:[愤怒 被喷 垃圾 碾压]^2 a.b.c:[士兵]";
+    ExpressionMetadata expressionMetadata = TripodExpressionParser
+        .parseFromString(expr1);
+    System.out.println(expressionMetadata.toString());
+  }
+
 }
