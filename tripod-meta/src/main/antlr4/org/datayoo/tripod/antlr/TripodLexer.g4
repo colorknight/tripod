@@ -15,6 +15,8 @@ NUMBER:      Digits ('.' Digits)?;
 
 TERM:       TermChar* LetterOrDigit TermChar*;
 
+IDENTIFIER:  Letter LetterOrDigit* ('.' Letter LetterOrDigit*)*;
+
 Q_PHRASE:       '\'' (~['\\\r\n] | EscapeSequence | '\\\'')* '\'';
 
 DQ_PHRASE:     '"' (~["\\\r\n] | EscapeSequence | '"')* '"';
@@ -47,7 +49,6 @@ LINE_COMMENT:       '//' ~[\r\n]*    -> channel(HIDDEN);
 
 // Identifiers
 
-IDENTIFIER:         Letter LetterOrDigit* ('.' Letter LetterOrDigit*)*;
 
 // Fragment rules
 

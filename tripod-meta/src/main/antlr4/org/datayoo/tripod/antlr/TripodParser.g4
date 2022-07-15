@@ -105,7 +105,7 @@ basicExpression returns[ExpressionMetadata expressionMetadata]
         $expressionMetadata = new UnaryMetadata(ExpressionType.MUST, $expressionMetadata);
     }
 }
-  : (MUST {must = true;})? ( t = IDENTIFIER COLON
+  : (MUST {must = true;})? ((t = IDENTIFIER | t = TERM) COLON
     {
         field = $t.getText();
     })?
