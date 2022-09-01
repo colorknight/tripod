@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>tripod-engine</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <name>tripod-engine</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
