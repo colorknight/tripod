@@ -82,4 +82,10 @@ public class TermEntityImpl implements TermEntity {
       return false;
     return te.term.equals(term);
   }
+
+  @Override
+  public String toString() {
+    return "TermEntity{" + "index=" + index + ", term='" + term + '\''
+        + ", partOfSpeech='" + partOfSpeech + '\'' + ", offset=" + offset + '}';
+  }
 }
